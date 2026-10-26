@@ -1,0 +1,24 @@
+# Edit the allowed registries to match your environment.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-image-registries
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: allowed-registries
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces: [kube-system, kyverno, local-path-storage]
+      validate:
+        message: "Images must come from registry.k8s.io or ghcr.io."
+        pattern:
+          spec:
+            containers:
+              - image: "registry.k8s.io/* | ghcr.io/*"

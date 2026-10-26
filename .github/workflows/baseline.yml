@@ -1,0 +1,31 @@
+name: baseline
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: helm/kind-action@v1
+        with:
+          config: kind-config.yaml
+      - uses: azure/setup-helm@v4
+      - name: Install Kyverno
+        run: make kyverno
+      - name: Apply namespace, network policies, Kyverno policies
+        run: make apply
+      - name: Verify admission controls
+        run: make verify
+      - name: kube-bench (informational)
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          ./scripts/kube-bench.sh reports/kube-bench.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reports
+          path: reports/
