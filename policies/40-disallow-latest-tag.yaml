@@ -14,7 +14,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: [kube-system, kyverno, local-path-storage]
+              namespaces: [kube-system, kyverno, local-path-storage, kube-bench]
       validate:
         message: "Images must specify a tag and must not use :latest."
         pattern:
@@ -29,7 +29,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: [kube-system, kyverno, local-path-storage]
+              namespaces: [kube-system, kyverno, local-path-storage, kube-bench]
       validate:
         message: "The :latest tag is not allowed."
         pattern:

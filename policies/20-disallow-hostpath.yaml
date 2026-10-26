@@ -14,7 +14,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: [kube-system, kyverno]
+              namespaces: [kube-system, kyverno, kube-bench]
       validate:
         message: "hostPath volumes are not allowed."
         pattern:

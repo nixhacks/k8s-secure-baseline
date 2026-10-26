@@ -15,7 +15,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: [kube-system, kyverno, local-path-storage]
+              namespaces: [kube-system, kyverno, local-path-storage, kube-bench]
       validate:
         message: "Images must come from registry.k8s.io or ghcr.io."
         pattern:

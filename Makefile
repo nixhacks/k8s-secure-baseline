@@ -13,15 +13,14 @@ kyverno:
 	  --version $(KYVERNO_CHART_VERSION) --wait --timeout 5m
 
 apply:
-	kubectl apply -f manifests/00-namespace.yaml -f manifests/10-networkpolicy.yaml
-	kubectl apply -f policies/
-	sleep 10   # let Kyverno register webhooks for new policies
+	kubectl apply -f manifests/00-namespace.yaml -f manifests/05-default-serviceaccounts.yaml -f manifests/10-networkpolicy.yaml
+	./scripts/apply-policies.sh
 
 verify:
 	./scripts/verify.sh
 
 bench:
-	./scripts/kube-bench.sh reports/kube-bench-$$(date +%F).txt
+	./scripts/kube-bench.sh reports/kube-bench-$$(date +%F-%H%M%S).txt
 
 down:
 	kind delete cluster --name secure-baseline
