@@ -13,7 +13,9 @@ kyverno:
 	  --version $(KYVERNO_CHART_VERSION) --wait --timeout 5m
 
 apply:
-	kubectl apply -f manifests/00-namespace.yaml -f manifests/05-default-serviceaccounts.yaml -f manifests/10-networkpolicy.yaml
+	kubectl apply -f manifests/00-namespace.yaml
+	./scripts/harden-default-sa.sh
+	kubectl apply -f manifests/10-networkpolicy.yaml
 	./scripts/apply-policies.sh
 
 verify:
